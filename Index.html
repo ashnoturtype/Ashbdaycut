@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        body {
+            background: #111;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 1s;
+        }
+        
+        body.lights-on {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .step {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        
+        .step.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h1 {
+            font-size: 4rem;
+            color: #ff4081;
+            text-shadow: 3px 3px 0 #fff, 5px 5px 0 rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .light-bulb {
+            font-size: 8rem;
+            margin: 40px 0;
+            animation: glow 2s infinite alternate;
+            display: none;
+        }
+        
+        .lights-on .light-bulb {
+            display: block;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #ff0; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff0, 0 0 40px #ff0; }
+        }
+        
+        .balloon-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .balloon {
+            width: 80px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            animation: floatUp 15s linear forwards;
+            opacity: 0;
+        }
+        
+        .balloon:before {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 60px;
+            background: #333;
+        }
+        
+        .balloon span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 1; }
+        }
+        
+        .cake-container {
+            margin: 40px auto;
+            width: 300px;
+            height: 200px;
+            position: relative;
+        }
+        
+        .cake {
+            width: 250px;
+            height: 100px;
+            background: #f8bbd0;
+            border-radius: 20px 20px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cake-top {
+            width: 280px;
+            height: 60px;
+            background: #f48fb1;
+            border-radius: 20px 20px 0 0;
+            position: absolute;
+            bottom: 100px;
+            left: 10px;
+        }
+        
+        .cake-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4081;
+            border-radius: 50%;
+        }
+        
+        .candles {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            position: absolute;
+            bottom: 160px;
+            width: 100%;
+        }
+        
+        .candle {
+            width: 15px;
+            height: 60px;
+            background: #ffeb3b;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+        }
+        
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: #ff9800;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -35px;
+            left: -2.5px;
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        .flame.out {
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s;
+        }
+        
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .decorations {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0;
+        }
+        
+        .decoration {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            animation: spin 2s infinite linear;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .message-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 5px solid #ff4081;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.6);
+            background: #ff79b0;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .music-player {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 500px;
+        }
+        
+        .lights-on .music-player {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #ff4081;
+            transition: width 0.1s;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 5s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .light-bulb {
+                font-size: 5rem;
+            }
+            
+            button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- STEP 1: Turn on Lights -->
+        <div class="step active" id="step1">
+            <h1>TURN ON THE LIGHTS</h1>
+            <div class="light-bulb">💡</div>
+            <p class="instruction">Click the button below to light up the party!</p>
+            <button id="turnOnLights">TURN ON LIGHTS</button>
+        </div>
+        
+        <!-- STEP 2: Play Music -->
+        <div class="step" id="step2">
+            <h1>PLAY MUSIC</h1>
+            <div class="music-player">
+                <p>🎵 Happy Birthday Song 🎵</p>
+                <div class="progress-bar">
+                    <div class="progress" id="musicProgress"></div>
+                </div>
+                <p id="songTime">0:00 / 0:30</p>
+                <button id="playMusic">PLAY BIRTHDAY SONG</button>
+            </div>
+            <button id="nextAfterMusic">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 3: Let's Decorate -->
+        <div class="step" id="step3">
+            <h1>LET'S DECORATE</h1>
+            <div class="decorations" id="decorationArea">
+                <!-- Decorations will be added here -->
+            </div>
+            <p class="instruction">Click the button to add decorations to the party!</p>
+            <button id="addDecorations">ADD DECORATIONS</button>
+            <button id="nextAfterDecorations">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 4: Fly with Balloons -->
+        <div class="step" id="step4">
+            <h1>FLY WITH BALLOONS</h1>
+            <div class="balloon-container" id="balloonArea">
+                <!-- Balloons will be added here -->
+            </div>
+            <p class="instruction">Release the balloons into the sky!</p>
+            <button id="releaseBalloons">RELEASE BALLOONS</button>
+            <button id="nextAfterBalloons">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 5: Cake Appears -->
+        <div class="step" id="step5">
+            <h1>MOST DELICIOUS CAKE EVER</h1>
+            <div class="cake-container">
+                <div class="cake"></div>
+                <div class="cake-top"></div>
+                <div class="candles" id="candles">
+                    <!-- Candles will be added here -->
+                </div>
+            </div>
+            <p class="instruction">Here's your birthday cake with candles!</p>
+            <button id="nextAfterCake">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 6: Blow Candles -->
+        <div class="step" id="step6">
+            <h1>LIGHT CANDLE</h1>
+            <div class="cake-container">
+                <div class="cake"></div>
+                <div class="cake-top"></div>
+                <div class="candles" id="candlesToBlow">
+                    <!-- Candles to blow will be added here -->
+                </div>
+            </div>
+            <p class="instruction">Click the candles to blow them out! Make a wish!</p>
+            <button id="nextAfterCandles">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 7: Happy Birthday in Balloon -->
+        <div class="step" id="step7">
+            <h1>HAPPY BIRTHDAY</h1>
+            <div class="balloon-container">
+                <div class="balloon" style="background: #ff4081; animation-delay: 0s;">
+                    <span>HAPPY</span>
+                </div>
+                <div class="balloon" style="background: #4caf50; animation-delay: 0.5s;">
+                    <span>BIRTHDAY</span>
+                </div>
+                <div class="balloon" style="background: #2196f3; animation-delay: 1s;">
+                    <span>TO YOU!</span>
+                </div>
+            </div>
+            <p class="instruction">Your birthday wishes are flying high!</p>
+            <button id="nextAfterBirthday">NEXT ➔</button>
+        </div>
+        
+        <!-- STEP 8: Message for You -->
+        <div class="step" id="step8">
+            <h1>A MESSAGE FOR YOU</h1>
+            <div class="message-box">
+                <p>🎉 Happy Birthday! 🎉</p>
+                <br>
+                <p>On this special day, I want you to know how much you mean to me. You bring so much joy, laughter, and light into the lives of everyone around you.</p>
+                <br>
+                <p>May your day be filled with love, laughter, and all the things that make you smile. May this year bring you closer to your dreams and fill your life with wonderful moments.</p>
+                <br>
+                <p>You deserve all the happiness in the world! Enjoy your special day to the fullest! 🥳</p>
+                <br>
+                <p>With lots of love and birthday wishes,</p>
+                <p><strong>Your Friend ❤️</strong></p>
+            </div>
+            <button id="restartParty">START OVER 🔄</button>
+        </div>
+        
+        <div class="controls">
+            <button id="prevBtn" disabled>⬅ PREVIOUS</button>
+            <button id="nextBtn" disabled>NEXT ➔</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let totalSteps = 8;
+        let musicPlaying = false;
+        let musicInterval;
+        let musicTime = 0;
+        const totalMusicTime = 30; // 30 seconds
+        
+        // Initialize steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+        });
+        document.getElementById('step1').classList.add('active');
+        updateButtons();
+        
+        // Function to go to next step
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateButtons();
+                
+                // Trigger specific animations for each step
+                triggerStepAnimations(currentStep);
+            }
+        }
+        
+        // Function to go to previous step
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateButtons();
+            }
+        }
+        
+        // Update navigation buttons
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentStep === 1;
+            document.getElementById('nextBtn').disabled = currentStep === totalSteps;
+            
+            // Show/hide next button based on step
+            if (currentStep === 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+            } else {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }
+        }
+        
+        // Trigger animations for each step
+        function triggerStepAnimations(step) {
+            switch(step) {
+                case 2:
+                    // Step 2: Music step
+                    break;
+                case 3:
+                    // Step 3: Decorations step
+                    createDecorations();
+                    break;
+                case 4:
+                    // Step 4: Balloons step
+                    break;
+                case 5:
+                    // Step 5: Cake appears
+                    createCake();
+                    break;
+                case 6:
+                    // Step 6: Candles to blow
+                    createCandlesToBlow();
+                    break;
+                case 7:
+                    // Step 7: Happy birthday balloons
+                    startBalloonAnimation();
+                    break;
+                case 8:
+                    // Step 8: Final message
+                    createConfetti();
+                    break;
+            }
+        }
+        
+        // Step 1: Turn on lights
+        document.getElementById('turnOnLights').addEventListener('click', function() {
+            document.body.classList.add('lights-on');
+            this.textContent = "LIGHTS ON! 🎉";
+            this.disabled = true;
+            setTimeout(() => {
+                nextStep();
+            }, 1500);
+        });
+        
+        // Step 2: Play music
+        document.getElementById('playMusic').addEventListener('click', function() {
+            if (!musicPlaying) {
+                musicPlaying = true;
+                this.textContent = "PLAYING... 🎵";
+                this.disabled = true;
+                
+                // Simulate music playing with progress bar
+                musicInterval = setInterval(() => {
+                    musicTime++;
+                    const progressPercent = (musicTime / totalMusicTime) * 100;
+                    document.getElementById('musicProgress').style.width = `${progressPercent}%`;
+                    
+                    // Update time display
+                    const currentTime = formatTime(musicTime);
+                    document.getElementById('songTime').textContent = `${currentTime} / 0:30`;
+                    
+                    if (musicTime >= totalMusicTime) {
+                        clearInterval(musicInterval);
+                        document.getElementById('nextAfterMusic').disabled = false;
+                        createConfetti();
+                    }
+                }, 1000);
+            }
+        });
+        
+        function formatTime(seconds) {
+            return `0:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+        
+        // Step 3: Create decorations
+        function createDecorations() {
+            const decorationArea = document.getElementById('decorationArea');
+            const colors = ['#ff4081', '#4caf50', '#2196f3', '#ffeb3b', '#9c27b0', '#ff9800'];
+            
+            for (let i = 0; i < 12; i++) {
+                const decoration = document.createElement('div');
+                decoration.className = 'decoration';
+                decoration.style.background = colors[i % colors.length];
+                decoration.style.animationDelay = `${i * 0.2}s`;
+                decorationArea.appendChild(decoration);
+            }
+        }
+        
+        document.getElementById('addDecorations').addEventListener('click', function() {
+            this.textContent = "DECORATIONS ADDED! 🎊";
+            this.disabled = true;
+            document.getElementById('nextAfterDecorations').disabled = false;
+            createConfetti();
+        });
+        
+        // Step 4: Release balloons
+        document.getElementById('releaseBalloons').addEventListener('click', function() {
+            this.textContent = "BALLOONS RELEASED! 🎈";
+            this.disabled = true;
+            document.getElementById('nextAfterBalloons').disabled = false;
+            
+            const balloonArea = document.getElementById('balloonArea');
+            const colors = ['#ff4081', '#4caf50', '#2196f3', '#ffeb3b', '#9c27b0'];
+            
+            for (let i = 0; i < 8; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.background = colors[i % colors.length];
+                balloon.style.animationDelay = `${i * 0.3}s`;
+                balloonArea.appendChild(balloon);
+            }
+            
+            createConfetti();
+        });
+        
+        // Step 5: Create cake
+        function createCake() {
+            const candlesArea = document.getElementById('candles');
+            for (let i = 0; i < 5; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.marginLeft = `${i * 10}px`;
+                
+                const flame = document.createElement('div');
+                flame.className = 'flame';
+                
+                candle.appendChild(flame);
+                candlesArea.appendChild(candle);
+            }
+        }
+        
+        document.getElementById('nextAfterCake').addEventListener('click', nextStep);
+        
+        // Step 6: Create candles to blow
+        function createCandlesToBlow() {
+            const candlesArea = document.getElementById('candlesToBlow');
+            candlesArea.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.marginLeft = `${i * 10}px`;
+                
+                const flame = document.createElement('div');
+                flame.className = 'flame';
+                flame.dataset.candleId = i;
+                
+                flame.addEventListener('click', function() {
+                    this.classList.add('out');
+                    setTimeout(() => {
+                        this.style.display = 'none';
+                        
+                        // Check if all candles are blown
+                        const allFlames = document.querySelectorAll('#candlesToBlow .flame:not(.out)');
+                        if (allFlames.length === 0) {
+                            document.getElementById('nextAfterCandles').disabled = false;
+                            createConfetti();
+                        }
+                    }, 500);
+                });
+                
+                candle.appendChild(flame);
+                candlesArea.appendChild(candle);
+            }
+        }
+        
+        // Step 7: Start balloon animation
+        function startBalloonAnimation() {
+            const balloons = document.querySelectorAll('#step7 .balloon');
+            balloons.forEach(balloon => {
+                balloon.style.animationPlayState = 'running';
+            });
+            
+            setTimeout(() => {
+                document.getElementById('nextAfterBirthday').disabled = false;
+            }, 1000);
+        }
+        
+        // Step 8: Final message
+        document.getElementById('restartParty').addEventListener('click', function() {
+            location.reload();
+        });
+        
+        // Navigation buttons
+        document.getElementById('nextBtn').addEventListener('click', nextStep);
+        document.getElementById('prevBtn').addEventListener('click', prevStep);
+        
+        // Step-specific next buttons
+        document.getElementById('nextAfterMusic').addEventListener('click', nextStep);
+        document.getElementById('nextAfterDecorations').addEventListener('click', nextStep);
+        document.getElementById('nextAfterBalloons').addEventListener('click', nextStep);
+        document.getElementById('nextAfterCake').addEventListener('click', nextStep);
+        document.getElementById('nextAfterCandles').addEventListener('click', nextStep);
+        document.getElementById('nextAfterBirthday').addEventListener('click', nextStep);
+        
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ff4081', '#4caf50', '#2196f3', '#ffeb3b', '#9c27b0', '#ff9800'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 15 + 5 + 'px';
+                confetti.style.height = Math.random() * 15 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 7000);
+            }
+        }
+    </script>
+</body>
+</html>
